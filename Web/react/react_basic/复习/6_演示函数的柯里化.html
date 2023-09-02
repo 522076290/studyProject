@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6_演示函数的柯里化</title>
+</head>
+<body>
+    <script type="text/javascript">
+        // function sum(a,b,c){
+        //     return a+b+c;
+        // }
+
+        function sum(a){
+            return function(b){
+                return function(c){
+                    return a+b+c;
+                }
+            }
+        }
+        const result = sum(1)(2)(3);
+        console.log(result)
+    </script>
+</body>
+</html>

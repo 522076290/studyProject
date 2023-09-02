@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1_函数式组件</title>
+</head>
+<body>
+    <!-- 准备好一个容器 -->
+    <div id="test">
+
+    </div>
+
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+
+    <script type="text/babel"> /* 此处一定要写babel  */
+        //1.创建类式组件
+        class MyComponent extends React.Component{
+            //render是放在哪里的？ —— MyComponent的原型对象上 供实例去使用
+            //render中的this是谁？ —— MyComponent的实例对象 <=> MyComponent组件实例对象
+            render(){
+                return <h2>我是用类定义的组件(适用于【复杂组件】)的定义</h2>
+            }
+        }
+
+        //2.渲染组件到页面
+        ReactDOM.render(<MyComponent />,document.getElementById('test'));
+        /*
+         * 执行了ReactDOM.render(<MyComponent/>......之后发生了什么？
+         * 1.React解析组件标签，找到了MyComponent组件。
+         * 2.发现组件是使用类定义的，随后new出来该类的实例
+         * 3.调用该实例的render方法，将返回的虚拟DOM转为真实DOM，随后渲染到页面上
+         * 4.当组件的state或props发生变化时，会重新执行render方法，返回新的虚拟DOM，再进行一次转换
+         */
+    </script>
+
+</body>
+</html>
