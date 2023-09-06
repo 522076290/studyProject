@@ -1,0 +1,301 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              01/31/2023 00:44:19 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\harddevelopment\keilC51\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
+                    -(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "Delay.h"
+   3          #include "Key.h"
+   4          #include "Nixie.h"
+   5          #include "Buzzer.h"
+   6          #include "Timer0.h"
+   7          
+   8          //蜂鸣器端口
+   9          sbit Buzzer = P2^5;
+  10          
+  11          //播放速度，值为四分音符的时长(ms)
+  12          #define SPEED 500
+  13          
+  14          //音符与索引对应表，P：休止符，L：低音，M：中音，H：高音，下划线：升半音�
+             -��号#
+  15          #define P 0
+  16          #define L1  1
+  17          #define L1_ 2
+  18          #define L2  3
+  19          #define L2_ 4
+  20          #define L3  5
+  21          #define L4  6
+  22          #define L4_ 7
+  23          #define L5  8
+  24          #define L5_ 9
+  25          #define L6  10
+  26          #define L6_ 11
+  27          #define L7  12
+  28          #define M1  13
+  29          #define M1_ 14
+  30          #define M2  15
+  31          #define M2_ 16
+  32          #define M3  17
+  33          #define M4  18
+  34          #define M4_ 19
+  35          #define M5  20
+  36          #define M5_ 21
+  37          #define M6  22
+  38          #define M6_ 23
+  39          #define M7  24
+  40          #define H1  25
+  41          #define H1_ 26
+  42          #define H2  27
+  43          #define H2_ 28
+  44          #define H3  29
+  45          #define H4  30
+  46          #define H4_ 31
+  47          #define H5  32
+  48          #define H5_ 33
+  49          #define H6  34
+  50          #define H6_ 35
+  51          #define H7  36
+  52          
+  53          unsigned char KeyNum;
+C51 COMPILER V9.59.0.0   MAIN                                                              01/31/2023 00:44:19 PAGE 2   
+
+  54          
+  55          //索引与频率对照表
+  56          unsigned int FreqTable[]={
+  57            0,
+  58            63628,63731,63835,63928,64021,64103,64185,64260,64331,64400,64463,64528,
+  59            64580,64633,64684,64732,64777,64820,64860,64898,64934,64968,65000,65030,
+  60            65058,65085,65110,65134,65157,65178,65198,65217,65235,65252,65268,65283,
+  61          };
+  62          
+  63          //乐谱
+  64          unsigned char code Music[]={
+  65            //音符,时值,
+  66            
+  67            //1
+  68            P,  4,
+  69            P,  4,
+  70            P,  4,
+  71            M6, 2,
+  72            M7, 2,
+  73            
+  74            H1, 4+2,
+  75            M7, 2,
+  76            H1, 4,
+  77            H3, 4,
+  78            
+  79            M7, 4+4+4,
+  80            M3, 2,
+  81            M3, 2,
+  82            
+  83            //2
+  84            M6, 4+2,
+  85            M5, 2,
+  86            M6, 4,
+  87            H1, 4,
+  88            
+  89            M5, 4+4+4,
+  90            M3, 4,
+  91            
+  92            M4, 4+2,
+  93            M3, 2,
+  94            M4, 4,
+  95            H1, 4,
+  96            
+  97            //3
+  98            M3, 4+4,
+  99            P,  2,
+ 100            H1, 2,
+ 101            H1, 2,
+ 102            H1, 2,
+ 103            
+ 104            M7, 4+2,
+ 105            M4_,2,
+ 106            M4_,4,
+ 107            M7, 4,
+ 108            
+ 109            M7, 8,
+ 110            P,  4,
+ 111            M6, 2,
+ 112            M7, 2,
+ 113            
+ 114            //4
+ 115            H1, 4+2,
+C51 COMPILER V9.59.0.0   MAIN                                                              01/31/2023 00:44:19 PAGE 3   
+
+ 116            M7, 2,
+ 117            H1, 4,
+ 118            H3, 4,
+ 119            
+ 120            M7, 4+4+4,
+ 121            M3, 2,
+ 122            M3, 2,
+ 123            
+ 124            M6, 4+2,
+ 125            M5, 2,
+ 126            M6, 4,
+ 127            H1, 4,
+ 128            
+ 129            //5
+ 130            M5, 4+4+4,
+ 131            M2, 2,
+ 132            M3, 2,
+ 133            
+ 134            M4, 4,
+ 135            H1, 2,
+ 136            M7, 2+2,
+ 137            H1, 2+4,
+ 138            
+ 139            H2, 2,
+ 140            H2, 2,
+ 141            H3, 2,
+ 142            H1, 2+4+4,
+ 143            
+ 144            //6
+ 145            H1, 2,
+ 146            M7, 2,
+ 147            M6, 2,
+ 148            M6, 2,
+ 149            M7, 4,
+ 150            M5_,4,
+ 151            
+ 152            
+ 153            M6, 4+4+4,
+ 154            H1, 2,
+ 155            H2, 2,
+ 156            
+ 157            H3, 4+2,
+ 158            H2, 2,
+ 159            H3, 4,
+ 160            H5, 4,
+ 161            
+ 162            //7
+ 163            H2, 4+4+4,
+ 164            M5, 2,
+ 165            M5, 2,
+ 166            
+ 167            H1, 4+2,
+ 168            M7, 2,
+ 169            H1, 4,
+ 170            H3, 4,
+ 171            
+ 172            H3, 4+4+4+4,
+ 173            
+ 174            //8
+ 175            M6, 2,
+ 176            M7, 2,
+ 177            H1, 4,
+C51 COMPILER V9.59.0.0   MAIN                                                              01/31/2023 00:44:19 PAGE 4   
+
+ 178            M7, 4,
+ 179            H2, 2,
+ 180            H2, 2,
+ 181            
+ 182            H1, 4+2,
+ 183            M5, 2+4+4,
+ 184            
+ 185            H4, 4,
+ 186            H3, 4,
+ 187            H3, 4,
+ 188            H1, 4,
+ 189            
+ 190            //9
+ 191            H3, 4+4+4,
+ 192            H3, 4,
+ 193            
+ 194            H6, 4+4,
+ 195            H5, 4,
+ 196            H5, 4,
+ 197            
+ 198            H3, 2,
+ 199            H2, 2,
+ 200            H1, 4+4,
+ 201            P,  2,
+ 202            H1, 2,
+ 203            
+ 204            //10
+ 205            H2, 4,
+ 206            H1, 2,
+ 207            H2, 2,
+ 208            H2, 4,
+ 209            H5, 4,
+ 210            
+ 211            H3, 4+4+4,
+ 212            H3, 4,
+ 213            
+ 214            H6, 4+4,
+ 215            H5, 4+4,
+ 216            
+ 217            //11
+ 218            H3, 2,
+ 219            H2, 2,
+ 220            H1, 4+4,
+ 221            P,  2,
+ 222            H1, 2,
+ 223            
+ 224            H2, 4,
+ 225            H1, 2,
+ 226            H2, 2+4,
+ 227            M7, 4,
+ 228            
+ 229            M6, 4+4+4,
+ 230            P,  4,
+ 231            
+ 232            0xFF  //终止标志
+ 233          };
+ 234          
+ 235          unsigned char FreqSelect,MusicSelect;
+ 236          
+ 237          void main()
+ 238          {
+ 239   1        
+C51 COMPILER V9.59.0.0   MAIN                                                              01/31/2023 00:44:19 PAGE 5   
+
+ 240   1        Timer0Init();
+ 241   1            while(1)
+ 242   1        {
+ 243   2            if(Music[MusicSelect]!=0xFF)
+ 244   2            {
+ 245   3                FreqSelect = Music[MusicSelect];
+ 246   3                MusicSelect++;
+ 247   3                Delay(SPEED/4*Music[MusicSelect]);
+ 248   3                MusicSelect++;
+ 249   3                TR0=0;
+ 250   3                Delay(5);
+ 251   3                TR0=1;
+ 252   3            }
+ 253   2            else
+ 254   2            {
+ 255   3              TR0=0;
+ 256   3              while(1);
+ 257   3            }
+ 258   2        }
+ 259   1      }
+ 260          
+ 261          void Timer0_Routine() interrupt 1
+ 262          {
+ 263   1        if(FreqTable[FreqSelect]){
+ 264   2          TL0 = FreqTable[FreqSelect]%256;    //设置定时初值
+ 265   2          TH0 = FreqTable[FreqSelect]/256;    //设置定时初值
+ 266   2          Buzzer=!Buzzer;
+ 267   2        }
+ 268   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    101    ----
+   CONSTANT SIZE    =    241    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     77    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

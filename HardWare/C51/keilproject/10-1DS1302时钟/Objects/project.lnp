@@ -1,0 +1,9 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\Delay.obj",
+".\Objects\UART.obj",
+".\Objects\MatrixLED.obj",
+".\Objects\LCD1602.obj",
+".\Objects\DS1302.obj" 
+TO ".\Objects\project" 
+PRINT(".\Listings\project.m51") RAMSIZE(256) 

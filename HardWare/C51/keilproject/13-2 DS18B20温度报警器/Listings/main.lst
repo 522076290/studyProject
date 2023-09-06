@@ -1,0 +1,139 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              02/02/2023 01:27:07 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\harddevelopment\keilC51\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
+                    -(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "LCD1602.h"
+   3          #include "OneWire.h"
+   4          #include "DS18B20.h"
+   5          #include "Delay.h"
+   6          #include "AT24C02.h"
+   7          #include "Timer0.h"
+   8          #include "I2C.h"
+   9          #include "Key.h"
+  10          
+  11          float T,TShow;
+  12          char TLow,THigh;
+  13          unsigned char KeyNum;
+  14          
+  15          void main()
+  16          {
+  17   1        
+  18   1        DS18B20_ConverT();
+  19   1        Delay(1000);
+  20   1        THigh = AT24C02_ReadByte(0);
+  21   1        TLow = AT24C02_ReadByte(1);
+  22   1        if(THigh>125 || TLow<-55 || THigh<=TLow){
+  23   2          THigh=20;
+  24   2          TLow=15;
+  25   2        }
+  26   1        LCD_Init();
+  27   1        LCD_ShowString(1,1,"T:");
+  28   1        LCD_ShowString(2,1,"TH:");
+  29   1        LCD_ShowString(2,9,"TL:");
+  30   1        LCD_ShowSignedNum(2,4,THigh,3);
+  31   1        LCD_ShowSignedNum(2,12,TLow,3);
+  32   1        Timer0_Init();
+  33   1        while(1)
+  34   1        {
+  35   2          KeyNum=Key();
+  36   2          
+  37   2          
+  38   2          /*温度读取及显示*/
+  39   2          DS18B20_ConverT();
+  40   2          T=DS18B20_ReadT();
+  41   2          if(T<0)
+  42   2          {
+  43   3            LCD_ShowChar(1,3,'-');
+  44   3            TShow=-T;
+  45   3          }else
+  46   2          {
+  47   3            LCD_ShowChar(1,3,'+');
+  48   3            TShow=T;
+  49   3          }
+  50   2          LCD_ShowNum(1,4,TShow,3);
+  51   2          LCD_ShowChar(1,7,'.');
+  52   2          LCD_ShowNum(1,8,(unsigned int)(TShow*100)%100,2);
+  53   2          
+  54   2          /*阈值判断及显示*/
+C51 COMPILER V9.59.0.0   MAIN                                                              02/02/2023 01:27:07 PAGE 2   
+
+  55   2          if(KeyNum)
+  56   2          {
+  57   3            if(KeyNum==1)
+  58   3            {
+  59   4              THigh++;
+  60   4              if(THigh>125)THigh=125;
+  61   4            }
+  62   3            if(KeyNum==2)
+  63   3            {
+  64   4              THigh--;
+  65   4              if(THigh<=TLow)THigh++;
+  66   4            }
+  67   3            if(KeyNum==3)
+  68   3            {
+  69   4              TLow++;
+  70   4              if(THigh<=TLow)TLow--;
+  71   4            }
+  72   3            if(KeyNum==4)
+  73   3            {
+  74   4              TLow--;
+  75   4              if(TLow<-55)TLow=-55;
+  76   4            }
+  77   3            LCD_ShowSignedNum(2,4,THigh,3);
+  78   3            LCD_ShowSignedNum(2,12,TLow,3);
+  79   3            AT24C02_WriteByte(0,THigh);
+  80   3            Delay(5);
+  81   3            AT24C02_WriteByte(1,TLow);
+  82   3            Delay(5);
+  83   3          }
+  84   2          if(T>THigh)
+  85   2          {
+  86   3            LCD_ShowString(1,13,"OV:H");
+  87   3          }
+  88   2          else if(T<TLow)
+  89   2          {
+  90   3            LCD_ShowString(1,13,"OV:L");
+  91   3          }
+  92   2          else
+  93   2          {
+  94   3            LCD_ShowString(1,13,"    ");
+  95   3          }
+  96   2        }
+  97   1      }
+  98          
+  99          void Timer0_Routine() interrupt 1
+ 100          {
+ 101   1        static unsigned int T0Count1,T0Count2,T0Count3;
+ 102   1        TL0 = 0x66;   //设置定时初值
+ 103   1        TH0 = 0xFC;   //设置定时初值
+ 104   1        T0Count1++;
+ 105   1        if(T0Count1>=20){
+ 106   2          T0Count1=0;
+ 107   2          Key_Loop();
+ 108   2        }
+ 109   1      }
+*** WARNING C280 IN LINE 101 OF main.c: 'T0Count2': unreferenced local variable
+*** WARNING C280 IN LINE 101 OF main.c: 'T0Count3': unreferenced local variable
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    674    ----
+   CONSTANT SIZE    =     26    ----
+C51 COMPILER V9.59.0.0   MAIN                                                              02/02/2023 01:27:07 PAGE 3   
+
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     17    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

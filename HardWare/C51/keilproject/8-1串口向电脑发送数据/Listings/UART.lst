@@ -1,0 +1,54 @@
+C51 COMPILER V9.59.0.0   UART                                                              01/26/2023 23:32:58 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\Objects\UART.obj
+COMPILER INVOKED BY: D:\harddevelopment\keilC51\C51\BIN\C51.EXE UART.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
+                    -(.\Listings\UART.lst) TABS(2) OBJECT(.\Objects\UART.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          /**
+   4            * @brief 串口初始化 4800bps@11.0592MHz
+   5            * @param 无
+   6            * @retval 无
+   7            */
+   8          void UartInit(void)   
+   9          {
+  10   1        SCON = 0x40;    //8位数据,可变波特率
+  11   1        PCON |= 0x80;   //使能波特率倍速位SMOD
+  12   1        TMOD &= 0x0F;   //清除定时器1模式位
+  13   1        TMOD |= 0x20;   //设定定时器1为8位自动重装方式
+  14   1        TL1 = 0xF4;   //设定定时初值
+  15   1        TH1 = 0xF4;   //设定定时器重装值
+  16   1        ET1 = 0;    //禁止定时器1中断
+  17   1        TR1 = 1;    //启动定时器1
+  18   1      }
+  19          
+  20          /**
+  21            * @brief 串口发送一个字节数据
+  22            * @param Byte 要发送的一个字节数据
+  23            * @retval 无
+  24            */
+  25          void UART_SendByte(unsigned char Byte)
+  26          {
+  27   1        SBUF=Byte;
+  28   1        while(TI==0);
+  29   1        TI=0;
+  30   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     31    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

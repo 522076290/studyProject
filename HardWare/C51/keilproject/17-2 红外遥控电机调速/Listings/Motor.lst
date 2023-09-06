@@ -1,0 +1,54 @@
+C51 COMPILER V9.59.0.0   MOTOR                                                             02/12/2023 14:05:46 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MOTOR
+OBJECT MODULE PLACED IN .\Objects\Motor.obj
+COMPILER INVOKED BY: D:\harddevelopment\keilC51\C51\BIN\C51.EXE Motor.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRIN
+                    -T(.\Listings\Motor.lst) TABS(2) OBJECT(.\Objects\Motor.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "Timer1.h"
+   3          
+   4          sbit Motor=P1^0;
+   5          
+   6          unsigned char Counter,Compare; 
+   7          
+   8          void Motor_Init(void)
+   9          {
+  10   1        Timer1_Init();
+  11   1      }
+  12          
+  13          void Motor_SetSpeed(unsigned char Speed)
+  14          {
+  15   1        Compare = Speed;
+  16   1      }
+  17          
+  18          void Timer1_Routine() interrupt 3
+  19          {
+  20   1        TL1 = 0xA4;   //设置定时初值
+  21   1        TH1 = 0xFF;   //设置定时初值
+  22   1        Counter++;
+  23   1        Counter%=100;
+  24   1        if(Counter<Compare)
+  25   1        {
+  26   2          Motor=1;
+  27   2        }else{
+  28   2          Motor=0;
+  29   2        }
+  30   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     49    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

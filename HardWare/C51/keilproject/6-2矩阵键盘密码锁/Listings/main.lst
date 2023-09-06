@@ -1,0 +1,74 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              01/25/2023 01:17:38 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\harddevelopment\keilC51\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
+                    -(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "Delay.h"
+   3          #include "Nixie.h"
+   4          #include "LCD1602.h"
+   5          #include "MatrixKey.h"
+   6          
+   7          unsigned char KeyNum;
+   8          unsigned int Password,Count;
+   9          
+  10          main(){
+  11   1        LCD_Init();
+  12   1        LCD_ShowString(1,1,"PassWord");
+  13   1      
+  14   1        while(1){
+  15   2          KeyNum = MatrixKey();
+  16   2          if(KeyNum){
+  17   3            
+  18   3            if(KeyNum<=10) //如果S1~S10按键按下 输入密码
+  19   3            {
+  20   4              if(Count<4){  //如果输入次数小于4
+  21   5                Password*=10;           //密码左移一位
+  22   5                Password += KeyNum%10;  //获取一位密码
+  23   5                Count++; //计次加一 
+  24   5              }
+  25   4              LCD_ShowNum(2,1,Password,4);  //更新显示
+  26   4            }
+  27   3            
+  28   3            
+  29   3            if(KeyNum==11){  //如果按下S11按键 则确认
+  30   4              if(Password==2345){ //如果密码正确
+  31   5                Delay(20)
+  32   5                LCD_ShowString(1,14,"OK ");
+*** ERROR C141 IN LINE 32 OF main.c: syntax error near 'LCD_ShowString', expected ';'
+  33   5                Delay(20);
+  34   5                Password = 0;  //密码清零
+  35   5                Count=0;      //计次清零
+  36   5                LCD_ShowNum(2,1,Password,4);  //更新显示
+  37   5              }
+  38   4              else{           //如果密码错误
+  39   5                Delay(20);
+  40   5                LCD_ShowString(1,14,"ERR");
+  41   5                Delay(20);
+  42   5                Password = 0;  //密码清零
+  43   5                Count=0;      //计次清零
+  44   5                LCD_ShowNum(2,1,Password,4);  //更新显示
+  45   5              }
+  46   4          }
+  47   3            
+  48   3          
+  49   3            if(KeyNum==12){   //如果按下S12 取消
+  50   4              Password = 0;  //密码清零
+  51   4              Count=0;      //计次清零
+  52   4              LCD_ShowString(1,14,"   ");
+  53   4              LCD_ShowNum(2,1,Password,4);  //更新显示
+C51 COMPILER V9.59.0.0   MAIN                                                              01/25/2023 01:17:38 PAGE 2   
+
+  54   4            }
+  55   3            
+  56   3            
+  57   3          }
+  58   2        }
+  59   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

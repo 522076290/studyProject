@@ -1,0 +1,54 @@
+C51 COMPILER V9.59.0.0   TIMER0                                                            02/12/2023 12:58:08 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE TIMER0
+OBJECT MODULE PLACED IN .\Objects\Timer0.obj
+COMPILER INVOKED BY: D:\harddevelopment\keilC51\C51\BIN\C51.EXE Timer0.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRI
+                    -NT(.\Listings\Timer0.lst) TABS(2) OBJECT(.\Objects\Timer0.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          void Timer0_Init(void)
+   4          {
+   5   1        
+   6   1        TMOD &= 0xF0;   //设置定时器模式 把TMOD的低四位清零 高四位保持不变
+   7   1        TMOD |= 0x01;   //设置定时器模式 把TMOD的最低位置1 高四位保持不变
+   8   1        TL0 = 0;    //设置定时初值
+   9   1        TH0 = 0;    //设置定时初值
+  10   1        TF0 = 0;    //清除TF0标志
+  11   1        TR0 = 0;    //定时器0不计时
+  12   1      }
+  13          
+  14          void Timer0_setCounter(unsigned int Value)
+  15          {
+  16   1        TH0=Value/256;
+  17   1        TH0=Value%256;
+  18   1      }
+  19          
+  20          unsigned int Timer0_GetCounter(void)
+  21          {
+  22   1        return (TH0<<8)|TL0;
+  23   1      }
+  24          
+  25          void Timer0_Run(unsigned char Flag)
+  26          {
+  27   1        TR0=Flag;
+  28   1      }
+  29          
+  30          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     42    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

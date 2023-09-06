@@ -1,0 +1,58 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              01/28/2023 01:47:23 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\harddevelopment\keilC51\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
+                    -(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include <INTRINS.H>
+   3          #include "Delay.h"
+   4          #include "UART.h"
+   5          #include "MatrixLED.h"
+   6          
+   7          
+   8          unsigned char Animation[]={
+   9            0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+  10            0xFF,0x08,0x08,0x08,0xFF,0x00,0x00,0xFF,
+  11            0x89,0x89,0x89,0x00,0x00,0xFF,0x01,0x01,
+  12            0x01,0x01,0x00,0x00,0xFF,0x01,0x01,0x01,
+  13            0x01,0x00,0x00,0x7E,0x81,0x81,0x7E,0x00,
+  14            0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+  15          };
+  16          
+  17          void main(){
+  18   1        unsigned char i,Offset=0,Count=0;
+  19   1        MatrixLED_Init();
+  20   1        while(1){
+  21   2          for(i=0;i<8;i++){
+  22   3            MatrixLED_ShowColum(i,Animation[i+Offset]);
+  23   3          }
+  24   2          Count++;
+  25   2          if(Count>10)
+  26   2          {
+  27   3            Count=0;
+  28   3            Offset++;
+  29   3            if(Offset>40){
+  30   4              Offset=0;
+  31   4            }
+  32   3          }
+  33   2        }
+  34   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     76    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     48       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
