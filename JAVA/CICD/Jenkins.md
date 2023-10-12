@@ -176,7 +176,7 @@ PATH
 
 /root/.nvm/versions/node/v18.12.0/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-![install_node1](./install_node1.jpg)
+![install_node1](./img/install_node1.jpg)
 
 ## Jenkins编译运行Maven项目
 
@@ -184,39 +184,39 @@ PATH
 
 在系统属性下的插件管理
 
-![compile_maven_1](./compile_maven_1.jpg)
+![compile_maven_1](./img/compile_maven_1.jpg)
 
 在可用插件中搜索安装
 
-![compile_maven_2](./compile_maven_2.jpg)
+![compile_maven_2](./img/compile_maven_2.jpg)
 
 插件安装好后可以配置Maven地址 
 
-![compile_maven_3](./compile_maven_3.jpg)
+![compile_maven_3](./img/compile_maven_3.jpg)
 
 在Maven安装增添加Maven的路径 /usr/local/maven/apache-maven-3.8.8
 
-![compile_maven_4](./compile_maven_4.jpg)
+![compile_maven_4](./img/compile_maven_4.jpg)
 
 安装好后可以新建任务 选择构建Maven项目
 
-![compile_maven_5](./compile_maven_5.jpg)
+![compile_maven_5](./img/compile_maven_5.jpg)
 
 填写好项目地址
 
-![compile_maven_6](./compile_maven_6.jpg)
+![compile_maven_6](./img/compile_maven_6.jpg)
 
 填写好项目地址，如果是私有仓库需要添加账号，设置好分支这边以master为例
 
-![compile_maven_7](./compile_maven_7.jpg)
+![compile_maven_7](./img/compile_maven_7.jpg)
 
 选择全局凭证 使用账号和密码 填写好用户名和密码(如果需要权限拉去的 公开仓库可以跳过这步)
 
-![compile_maven_8](./compile_maven_8.jpg)
+![compile_maven_8](./img/compile_maven_8.jpg)
 
 填写好pom文件的路径 根路径是你的项目 并设置跳过测试clean install package '-Dmaven.test.skip=true'
 
-![compile_maven_9](./compile_maven_9.jpg)
+![compile_maven_9](./img/compile_maven_9.jpg)
 
 配置好后即可完成项目构建 可以点击立即构建测试一下是否能够正常打包项目
 
@@ -224,15 +224,15 @@ PATH
 
 新建项目 选择自由风格项目
 
-![compile_font_1](./compile_font_1.jpg)
+![compile_font_1](./img/compile_font_1.jpg)
 
 设置git项目地址 并配置构建保存天数和最大个数
 
-![compile_font_2](./compile_font_2.jpg)
+![compile_font_2](./img/compile_font_2.jpg)
 
 同样的配置git账号选择分支
 
-![compile_font_3](./compile_font_3.jpg)
+![compile_font_3](./img/compile_font_3.jpg)
 
 增加Build Steps 编写构建shell脚本
 
@@ -247,7 +247,7 @@ pnpm install
 npm run build:dev
 ```
 
-![compile_font_4](./compile_font_4.jpg)
+![compile_font_4](./img/compile_font_4.jpg)
 
 ## 构建Docker镜像
 
@@ -264,19 +264,19 @@ cd /var/jenkins_home/workspace/digital-village-cloud/yudao-gateway
 docker build -t yudao-gateway .
 ```
 
-![docker_package_1](./docker_package_1.jpg)
+![docker_package_1](./img/docker_package_1.jpg)
 
 ## 运行Docker镜像
 
 在Jenkins安装插件[Publish Over SSH](https://plugins.jenkins.io/publish-over-ssh)
 
-![docker_run_1](./docker_run_1.jpg)
+![docker_run_1](./img/docker_run_1.jpg)
 
 在系统管理中设置里 增加SSH Server
 
 填写主机地址 以及登录用户名 和使用密码登录 填写密码
 
-![docker_run_2](./docker_run_2.jpg)
+![docker_run_2](./img/docker_run_2.jpg)
 
 在构建完新增往新主机推送文件
 
@@ -286,7 +286,7 @@ docker build -t yudao-gateway .
 
 传送到远程地址的位置 Remote directory
 
-![docker_run_3](./docker_run_3.jpg)
+![docker_run_3](./img/docker_run_3.jpg)
 
 ```shell
 #执行docker compose脚本  compose 脚本需要自行编写
