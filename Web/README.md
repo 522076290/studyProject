@@ -7,15 +7,19 @@
 
 
 
-# Vue2.0+Vue3.0
+## Vue2.0+Vue3.0
 
   项目学习地址：  [尚硅谷Vue2.0+3.0](https://www.bilibili.com/video/BV1Zy4y1K7SH/) 张天禹老师
 
   包含了整个视频的所有项目工程文件，以及会用到的课件等资料
 
+## Promise
 
 
 
+  项目学习地址：  [尚硅谷Promise](https://www.bilibili.com/video/BV1GA411x7z1/) 李强老师
+
+  包含了整个视频的所有项目工程文件，以及会用到的课件等资料
 
 
 
