@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import {Route, Routes, Navigate} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import About from "./pages/About"; //About是路由组件
 import Home from "./pages/Home"; //Home是路由组件
+import Test from "./pages/Test"; //Test是路由组件
 import Header from "./components/Header"; // Header是一般组件
 import MyNavLink from "./components/MyNavLink";
 
@@ -38,7 +39,7 @@ export default class App extends Component {
                 <Routes> 
                   <Route path="/about" element={<About/>}/>
                   <Route path="/home" element={<Home/>}/>
-                  <Route path="*" element={<Navigate to="about" />} />{/* Navigate 实现重定向功能 */}
+                  <Route path="/home" element={<Test/>}/>
                 </Routes>
               </div>
             </div>

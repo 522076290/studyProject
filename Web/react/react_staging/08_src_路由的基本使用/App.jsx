@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import {Route, Routes, Navigate} from 'react-router-dom';
-import About from "./pages/About"; //About是路由组件
-import Home from "./pages/Home"; //Home是路由组件
-import Header from "./components/Header"; // Header是一般组件
-import MyNavLink from "./components/MyNavLink";
+import {Link, Route, Routes} from 'react-router-dom';
+import About from "./pages/About";
+import Home from "./pages/Home";
 
 export default class App extends Component {
   render() {
@@ -11,7 +9,9 @@ export default class App extends Component {
       <div>
         <div className="row">
           <div className="col-xs-offset-2 col-xs-8">
-            <Header/>
+            <div className="page-header">
+              <h2>React Router Demo</h2>
+            </div>
           </div>
         </div>
         <div className="row">
@@ -26,19 +26,17 @@ export default class App extends Component {
               </a> */}
               
               {/* 在react中靠路由链接实现切换组件 */}
-              <MyNavLink to="/about">About</MyNavLink>
-              <MyNavLink to="/home">Home</MyNavLink>
+                <Link className="list-group-item" to="/about">About</Link>
+                <Link className="list-group-item" to="/home">Home</Link>
             </div>
           </div>
           <div className="col-xs-6">
             <div className="panel">
               <div className="panel-body">
                 {/* 注册路由 */}
-                {/* Routes 组件也可以实现 Switch组件的效果 */}
-                <Routes> 
-                  <Route path="/about" element={<About/>}/>
-                  <Route path="/home" element={<Home/>}/>
-                  <Route path="*" element={<Navigate to="about" />} />{/* Navigate 实现重定向功能 */}
+                <Routes>
+                  <Route path="about" element={<About/>}/>
+                  <Route path="home" element={<Home/>}/>
                 </Routes>
               </div>
             </div>
