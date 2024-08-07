@@ -308,3 +308,18 @@ docker rmi $(docker images -f "dangling=true" -q)
 docker compose -p back-stage up
 ```
 
+
+
+## JenKins清理历史构建脚本
+
+```shell
+def jobName = "digital-village-cloud"   //删除的项目名称
+def maxNumber = 40    // 保留的最小编号，意味着小于该编号的构建都将被删除
+
+Jenkins.instance.getItemByFullName(jobName).builds.findAll {
+  it.number <= maxNumber
+}.each {
+  it.delete()
+}
+```
+
