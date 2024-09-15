@@ -1,3 +1,4 @@
 node_modules
-HardWare\STM32\**\Objects\
-HardWare\STM32\**\Listings\
+
+/HardWare/STM32/**/Objects
+/HardWare/STM32/**/Listings
