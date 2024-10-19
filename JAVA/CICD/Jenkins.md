@@ -113,8 +113,8 @@ ps aux|grep docker
 mkdir -p /mydata/jenkins/jenkins_home
 
 # 为了在容器中使用docker 还需要修改docker.sock的所有者
-cd /var/run/docker.sock
-chown root:root docker.sock
+/var/run/docker.sock
+chown root:root /var/run/docker.sock
 
 # docker启动 
 docker run -d --name myjenkins -u root -p 18080:8080 -p 50000:50000 --restart=on-failure -v /mydata/jenkins/jenkins_home:/var/jenkins_home -v /mydata/jenkins/maven/apache-maven-3.8.8:/usr/local/maven/apache-maven-3.8.8 -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker -v /etc/docker/daemon.json:/etc/docker/daemon.json  jenkins/jenkins:lts-jdk11 
